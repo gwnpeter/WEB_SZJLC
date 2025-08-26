@@ -228,7 +228,7 @@ namespace Brand
                                 outTxt.AppendLine($"\"{coupon.Amount}\",\"{coupon.Condition}\",\"{coupon.Description}\",\"{matches[0].Url}\",\"{info}\"");
                             }
                             else
-                                outTxt.AppendLine($"{coupon.Amount},{coupon.Condition},{coupon.Description}");
+                                outTxt.AppendLine($"\"{coupon.Amount}\",\"{coupon.Condition}\",\"{coupon.Description}\"");
                         }
                         File.WriteAllText("HuoDong.csv", outTxt.ToString());
                         MessageBox.Show("获取优惠券信息完成", "关闭", MessageBoxButtons.OK, MessageBoxIcon.Information);
