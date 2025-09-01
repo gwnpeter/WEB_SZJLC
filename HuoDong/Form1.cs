@@ -214,6 +214,7 @@ namespace Brand
                             var txtName = coupon.Description.Replace("品牌券", "").Trim();
                             if (txtName.StartsWith("<"))
                                 txtName = txtName.Substring(txtName.IndexOf(">") + 1);
+                            txtName = txtName.Substring(txtName.IndexOf("元") + 1);
                             var matches = store.FindByNameContains(txtName);
                             if (matches.Count >= 1)
                             {
