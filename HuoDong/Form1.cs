@@ -147,7 +147,7 @@ namespace Brand
         {
             if (e.IsSuccess)
             {
-                string result = await webView2First.ExecuteScriptAsync("document.body.innerText;");
+                string result = await webView2First.ExecuteScriptAsync("document.body.innerText");
                 string html = JsonConvert.DeserializeObject<string>(result) ?? "";
                 html = html.Substring(html.IndexOf("<html"));
                 //File.WriteAllText("huodong.html", html);

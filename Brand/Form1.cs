@@ -109,21 +109,25 @@ namespace Brand
         private string BrandGetNextUrl()
         {
             progressBar1.Value = (int)((gBrandPos * 100) / gBrandUrl.Length);
-            while (gBrandPos < gBrandUrl.Length)
+            try
             {
-                var url = gBrandUrl[gBrandPos];
-                gBrandPos++;
-                if (url.StartsWith("https://list.szlcsc.com/brand/", StringComparison.CurrentCultureIgnoreCase))
+                while (gBrandPos < gBrandUrl.Length)
                 {
-                    if (url.IndexOf("?") != -1)
-                        url = url.Substring(0, url.IndexOf("?"));
-                    Debug.WriteLine($"网页:{url}");
-                    return url;
+                    var url = gBrandUrl[gBrandPos];
+                    gBrandPos++;
+                    if (url.StartsWith("https://list.szlcsc.com/brand/", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        if (url.IndexOf("?") != -1)
+                            url = url.Substring(0, url.IndexOf("?"));
+                        Debug.WriteLine($"网页:{url}");
+                        return url;
+                    }
                 }
             }
+            catch { }
             timer1.Enabled = true;
             timer1.Stop();
-            timer1.Interval = 90000;
+            timer1.Interval = 40000;
             timer1.Start();
             progressBar1.Value = 100;
             return "";
@@ -134,8 +138,9 @@ namespace Brand
             Microsoft.Web.WebView2.WinForms.WebView2 wv = (Microsoft.Web.WebView2.WinForms.WebView2)sender;
             if (e.IsSuccess)
             {
-                string htmlContent = await wv.CoreWebView2.ExecuteScriptAsync("document.documentElement.outerHTML");
+                string htmlContent = await wv.CoreWebView2.ExecuteScriptAsync("document.body.innerText");
                 string html = JsonConvert.DeserializeObject<string>(htmlContent) ?? "";
+                html = html.Substring(html.IndexOf("<html"));
                 //File.WriteAllText("brand.html", html);
                 var txtCmpName = HtmlGetTitleCmpName(html);
                 var txtCmpCnt = HtmlGetTitleCmpContent(html);
@@ -148,7 +153,7 @@ namespace Brand
                 url = BrandGetNextUrl();
                 await Task.Delay(50);
                 if (string.IsNullOrWhiteSpace(url) == false)
-                    wv.Source = new Uri(url);
+                    wv.Source = new Uri(@"view-source:" + url);
             }
             else
             {
@@ -313,26 +318,26 @@ namespace Brand
                 webView220.CoreWebView2.Settings.AreDevToolsEnabled = false;
                 webView220.ZoomFactor = 0.3;
 
-                webView21.Source = new Uri(BrandGetNextUrl());
-                webView22.Source = new Uri(BrandGetNextUrl());
-                webView23.Source = new Uri(BrandGetNextUrl());
-                webView24.Source = new Uri(BrandGetNextUrl());
-                webView25.Source = new Uri(BrandGetNextUrl());
-                webView26.Source = new Uri(BrandGetNextUrl());
-                webView27.Source = new Uri(BrandGetNextUrl());
-                webView28.Source = new Uri(BrandGetNextUrl());
-                webView29.Source = new Uri(BrandGetNextUrl());
-                webView210.Source = new Uri(BrandGetNextUrl());
-                webView211.Source = new Uri(BrandGetNextUrl());
-                webView212.Source = new Uri(BrandGetNextUrl());
-                webView213.Source = new Uri(BrandGetNextUrl());
-                webView214.Source = new Uri(BrandGetNextUrl());
-                webView215.Source = new Uri(BrandGetNextUrl());
-                webView216.Source = new Uri(BrandGetNextUrl());
-                webView217.Source = new Uri(BrandGetNextUrl());
-                webView218.Source = new Uri(BrandGetNextUrl());
-                webView219.Source = new Uri(BrandGetNextUrl());
-                webView220.Source = new Uri(BrandGetNextUrl());
+                webView21.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView22.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView23.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView24.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView25.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView26.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView27.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView28.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView29.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView210.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView211.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView212.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView213.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView214.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView215.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView216.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView217.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView218.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView219.Source = new Uri(@"view-source:" + BrandGetNextUrl());
+                webView220.Source = new Uri(@"view-source:" + BrandGetNextUrl());
                 webView2First.Dispose();
             }
         }
